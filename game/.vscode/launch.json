@@ -27,6 +27,7 @@
             "args": [
                 "--console",
                 "\"${workspaceFolder}\"",
+                "-dev"
             ],
         },
         {

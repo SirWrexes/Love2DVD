@@ -5,7 +5,8 @@ if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
     for _, v in ipairs(arg) do
         if v == "-debug" then
             __DEBUG = true
-            break
+        elseif v == "-dev" then
+            __DEV = true
         end
     end
 
