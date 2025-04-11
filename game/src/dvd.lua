@@ -27,26 +27,37 @@ function DVD:init(...)
         y = 400,
     }
     self.rotation = 0
-    self.speed = 1
+    self.speed = 100
     self.angle = love.math.random() * math.pi
 end
 
 ---@param ctx Context
 function DVD:update(ctx)
-    self.centre.x = self.pos.x + self.dim.x / 2
-    self.centre.y = self.pos.y + self.dim.y / 2
+    local cos, sin = math.cos(self.angle), math.sin(self.angle)
+
+    self.pos:set {
+        x = self.pos.x + self.speed * cos * ctx.delta,
+        y = self.pos.y + self.speed * sin * ctx.delta,
+    }
+
+    self.centre:set {
+        x = self.pos.x + self.dim.x / 2,
+        y = self.pos.y + self.dim.y / 2,
+    }
 end
 
 ---@param ctx Context
 function DVD:draw(ctx)
     love.graphics.draw(self.image, self.pos.x, self.pos.y, self.rotation, self.scale, self.scale)
 
-    -- Velocities
-    love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, self.centre.y)
-    love.graphics.line(self.centre.x, self.centre.y, self.centre.x, ctx.mouse.pos.y)
+    if __DEV then
+        -- Velocities
+        love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, self.centre.y)
+        love.graphics.line(self.centre.x, self.centre.y, self.centre.x, ctx.mouse.pos.y)
 
-    --The angle
-    love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, ctx.mouse.pos.y)
+        --The angle
+        love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, ctx.mouse.pos.y)
+    end
 end
 
 return DVD
