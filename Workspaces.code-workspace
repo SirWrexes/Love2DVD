@@ -20,7 +20,7 @@
     "settings": {
         "licenser.disableAutoHeaderInsertion": true,
         "licenser.license": "MIT",
-        "licenser.projectName": "LÖVE Template",
+        "licenser.projectName": "LÖVE2DVD",
         "licenser.useSingleLineStyle": false,
         "material-icon-theme.folders.associations": {
             "game": "Robot"
