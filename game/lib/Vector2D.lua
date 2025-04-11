@@ -1,3 +1,5 @@
+---@diagnostic disable: duplicate-set-field
+
 local Object = require "lib.object"
 local inspect = require "lib.inspect"
 
@@ -28,28 +30,15 @@ end
 ---@param value unknown
 ---@return self? value Input `value` cast as [`Vector2D`](lua://Vector2D) when `isVector2d == true`
 function Vector2D.validate(value)
-    if type(value) ~= "table" then
-        print "suce"
-        return
-    end
-
-    if value.x and type(value.x) ~= "number" then
-        print "boule"
-        return
-    end
-    if value.y and type(value.y) ~= "number" then
-        print "swag"
-        return
-    end
-
+    if type(value) ~= "table" then return end
+    if value.x and type(value.x) ~= "number" then return end
+    if value.y and type(value.y) ~= "number" then return end
     return value
 end
 
 ---@private
 ---@param x number
 ---@param y number
----@overload fun(value: Vector2D.Partial)
----@overload fun(value: Vector2D)
 function Vector2D:init(x, y)
     if x == nil and y == nil then
         ---@diagnostic disable-next-line: cast-local-type
@@ -60,19 +49,23 @@ function Vector2D:init(x, y)
     end
 
     local value = assert(self.validate(x), "Invalid vector value: " .. inspect(x, {
-        depth = 2,
-        newline = "",
-        indent = "",
+        depth = 1,
+        newline = " ",
+        indent = " ",
     }))
 
     self.x = value.x and value.x or 0
     self.y = value.y and value.y or 0
 end
 
+---@param value Vector2D.Partial
+function Vector2D:set(value) end
+
+---@param value Vector2D
+function Vector2D:set(value) end
+
 ---@param x number
 ---@param y number
----@overload fun(value: Vector2D.Partial)
----@overload fun(value: Vector2D)
 function Vector2D:set(x, y)
     self:init(x, y)
 end
