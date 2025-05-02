@@ -17,11 +17,7 @@ local inspect = require "lib.inspect"
 ---@overload fun(to_clone: self): self Copy constructor
 
 ---@class Vector2D: ExtendableObject
----@field x number
----@field y number
-local Vector2D = Object:extend(function(self)
-    self.x, self.y = 0, 0
-end)
+local Vector2D = Object:extend()
 
 function Vector2D:__tostring()
     return string.format("(%.2f, %.2f)", self.x, self.y)
@@ -54,7 +50,10 @@ function Vector2D:init(x, y)
         indent = " ",
     }))
 
+    ---@type number
     self.x = value.x and value.x or 0
+
+    ---@type number
     self.y = value.y and value.y or 0
 end
 
