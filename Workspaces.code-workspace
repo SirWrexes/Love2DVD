@@ -24,6 +24,7 @@
         "licenser.useSingleLineStyle": false,
         "material-icon-theme.folders.associations": {
             "game": "Robot"
-        }
+        },
+        "stylua.targetReleaseVersion": "latest"
     }
 }

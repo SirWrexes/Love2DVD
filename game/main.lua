@@ -1,4 +1,4 @@
-local DVD = require "src.dvd"
+local DVD = require "src.Dvd"
 local Util = require "lib.Util"
 local Vector2D = require "lib.Vector2D"
 local inspect = require "lib.inspect"
