@@ -21,42 +21,68 @@ function DVD:init(...)
         x = dim.x * self.scale,
         y = dim.y * self.scale,
     }
-    self.centre = Vector2D()
     self.pos = Vector2D {
-        x = 500,
-        y = 400,
+        x = 500 - self.dim.x / 2,
+        y = 400 - self.dim.y / 2,
     }
     self.rotation = 0
-    self.speed = 100
-    self.angle = love.math.random() * math.pi
+    self.speed = 150
+    self.angle = -math.pi + love.math.random() * (2 * math.pi)
+    self.collision = {
+        l = false,
+        r = false,
+        u = false,
+        d = false,
+    }
 end
 
 ---@param ctx Context
 function DVD:update(ctx)
-    local cos, sin = math.cos(self.angle), math.sin(self.angle)
+    if ctx.pause then return end
 
-    self.pos:set {
+    local cos, sin = math.cos(self.angle), math.sin(self.angle)
+    self.collision.u = self.pos.y <= 0
+    self.collision.d = self.pos.y + self.dim.y >= ctx.window.dim.y
+    self.collision.l = self.pos.x <= 0
+    self.collision.r = self.pos.x + self.dim.x >= ctx.window.dim.x
+
+    if self.collision.u or self.collision.d then
+        self.pos.y = self.collision.u and 0 or ctx.window.dim.y - self.dim.y
+        self.collision.u = false
+        self.collision.d = false
+        sin = sin * -1
+    end
+    if self.collision.l or self.collision.r then
+        self.pos.x = self.collision.l and 0 or ctx.window.dim.x - self.dim.x
+        self.collision.l = false
+        self.collision.r = false
+        cos = cos * -1
+    end
+
+    local next = {
         x = self.pos.x + self.speed * cos * ctx.delta,
         y = self.pos.y + self.speed * sin * ctx.delta,
     }
 
-    self.centre:set {
-        x = self.pos.x + self.dim.x / 2,
-        y = self.pos.y + self.dim.y / 2,
-    }
+    self.angle = math.atan2(next.y - self.pos.y, next.x - self.pos.x)
+    self.pos:set(next)
 end
 
 ---@param ctx Context
 function DVD:draw(ctx)
     love.graphics.draw(self.image, self.pos.x, self.pos.y, self.rotation, self.scale, self.scale)
 
-    if __DEV then
-        -- Velocities
-        love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, self.centre.y)
-        love.graphics.line(self.centre.x, self.centre.y, self.centre.x, ctx.mouse.pos.y)
+    if __DEV then -- draw a visualitation of the trajectory vector
+        local cos, sin = math.cos(self.angle), math.sin(self.angle)
+        local vx = self.pos.x + self.speed * cos
+        local vy = self.pos.y + self.speed * sin
 
-        --The angle
-        love.graphics.line(self.centre.x, self.centre.y, ctx.mouse.pos.x, ctx.mouse.pos.y)
+        -- Velocities
+        love.graphics.line(self.pos.x, self.pos.y, vx, self.pos.y)
+        love.graphics.line(self.pos.x, self.pos.y, self.pos.x, vy)
+
+        -- Angle
+        love.graphics.line(self.pos.x, self.pos.y, vx, vy)
     end
 end
 
