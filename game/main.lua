@@ -12,6 +12,8 @@ local ctx = {
         dim = Vector2D(),
     },
     mouse = { pos = Vector2D() },
+    pause = false,
+    pauseWait = false,
 }
 
 local bgColour = "#232323"
@@ -36,6 +38,13 @@ function love.update(delta)
         else
             love.event.quit()
         end
+    end
+
+    if ctx.pauseWait and not love.keyboard.isDown "space" then
+        ctx.pauseWait = false
+        ctx.pause = not ctx.pause
+    elseif love.keyboard.isDown "space" then
+        ctx.pauseWait = true
     end
 
     ctx.delta = delta
