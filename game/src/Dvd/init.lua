@@ -1,5 +1,6 @@
 local Object = require "lib.object"
-local Vector2D = require "lib.Vector2D"
+local Vector2 = require "lib.Vector2"
+local Vector3 = require "lib.Vector3"
 
 local MAX_DIM = 128
 
@@ -12,15 +13,15 @@ local DVD = Object:extend()
 function DVD:init(...)
     self.image = love.graphics.newImage "assets/dvd.png"
 
-    local dim = Vector2D(self.image:getDimensions())
+    local dim = Vector2(self.image:getDimensions())
     local scaleTarget = (dim.x > dim.y and "x") or "y"
 
     self.scale = MAX_DIM / dim[scaleTarget]
-    self.dim = Vector2D {
+    self.dim = Vector2 {
         x = dim.x * self.scale,
         y = dim.y * self.scale,
     }
-    self.pos = Vector2D {
+    self.pos = Vector2 {
         x = 500 - self.dim.x / 2,
         y = 400 - self.dim.y / 2,
     }
@@ -33,6 +34,7 @@ function DVD:init(...)
         u = false,
         d = false,
     }
+    self.colour = Vector3()
 end
 
 DVD.detectWindowCollision = require "src.Dvd.detectWindowCollision"

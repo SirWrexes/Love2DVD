@@ -1,17 +1,19 @@
 local DVD = require "src.Dvd"
 local Util = require "lib.Util"
-local Vector2D = require "lib.Vector2D"
+local Vector2 = require "lib.Vector2"
 local inspect = require "lib.inspect"
 
 local logo = DVD()
+
+print(_VERSION)
 
 ---@class Context
 local ctx = {
     delta = 0,
     window = {
-        dim = Vector2D(),
+        dim = Vector2(),
     },
-    mouse = { pos = Vector2D() },
+    mouse = { pos = Vector2() },
     pause = false,
     pauseWait = false,
 }
@@ -19,7 +21,7 @@ local ctx = {
 local bgColour = "#232323"
 
 function love.load()
-    local r, g, b = Util.hexToRgb(bgColour)
+    local r, g, b = Util.Colours.hexToRgb(bgColour)
     love.graphics.setBackgroundColor(love.math.colorFromBytes(r, g, b))
     logo:init()
 

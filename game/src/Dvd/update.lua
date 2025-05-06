@@ -1,3 +1,5 @@
+local Colours = require "lib.Util.Colours"
+
 ---@param self DVD
 ---@param ctx Context
 return function(self, ctx)
@@ -7,7 +9,8 @@ return function(self, ctx)
     self:updatePosition(ctx)
 
     if self:hasCollided() then
-        -- self:changeColour()
+        local r, g, b = Colours.randomRgb()
+        self.colour:set(Colours.rgbToPercentage(r, g, b))
         self.collision.u = false
         self.collision.d = false
         self.collision.l = false

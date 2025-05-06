@@ -9,6 +9,8 @@
 --
 --
 
+local inspect = require "lib.inspect"
+
 ---@class ExtendableObject
 ---@field private __index      self
 ---@field private __instanceof self
@@ -65,5 +67,7 @@ function Object.isInstanceof(instance, class)
     return Object.couldBeObject(instance)
         and (instance.__instanceof == class or Object.isInstanceof(instance.__instanceof, class))
 end
+
+Object.inspect = inspect
 
 return Object

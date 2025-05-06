@@ -1,3 +1,17 @@
+---@generic Item
+---@alias Inspect.Processor fun(item: Item, path: table<any>): Item?
+
+---@class Inspect.Options
+---@field depth     integer?
+---@field newline   string?
+---@field indent    string?
+---@field process   Inspect.Processor?
+
+---@class Inspect.Inspector
+---@overload fun(root: any, options?: Inspect.Options): string
+
+---@alias Inspect.ProcessorDict { [string]: Inspect.Processor }
+
 local _tl_compat
 if (tonumber((_VERSION or ""):match "[%d.]*$") or 0) < 5.3 then
     local p, m = pcall(require, "compat53.module")
@@ -7,15 +21,9 @@ local math = _tl_compat and _tl_compat.math or math
 local string = _tl_compat and _tl_compat.string or string
 local table = _tl_compat and _tl_compat.table or table
 
----@generic T
----@alias inspect.Processor fun(path: table, item: T): T?
-
-local inspect = {
-    Options = {},
-
-    ---@type {[string]: inspect.Processor}
-    proc = {},
-}
+---@class Inspect.Inspector
+---@field proc Inspect.ProcessorDict
+local inspect = { Options = {}, proc = {} }
 
 inspect._VERSION = "inspect.lua 3.1.0"
 inspect._URL = "http://github.com/kikito/inspect.lua"
